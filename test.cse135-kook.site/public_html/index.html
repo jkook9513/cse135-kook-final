@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Juniper & Ash — Furniture Shop</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <script src="/assets/app.js" defer></script>
+  <script>
+    window._cq = window._cq || [];
+    _cq.push(['init', {
+      endpoint: 'https://collector.cse135-kook.site/log',
+      enableVitals: true,
+      enableErrors: true,
+      sampleRate: 1.0,
+      debug: true,
+      respectConsent: false,
+      detectBots: false
+    }]);
+  </script>
+  <script async src="https://collector.cse135-kook.site/collector.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">🪵</span>
+        <div class="brand-text">
+          <h1>Juniper &amp; Ash</h1>
+          <p class="tagline">Modern furniture, offline-friendly demo site.</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="btn ghost" id="themeToggle" type="button" aria-pressed="false">Toggle theme</button>
+        <a class="btn primary" href="/catalog.html">Shop</a>
+        <button class="btn" id="openCart" type="button" aria-haspopup="dialog">
+          Cart <span class="badge" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="nav-link active" href="/index.html">Home</a>
+      <a class="nav-link" href="/catalog.html">Catalog</a>
+      <a class="nav-link" href="/about.html">About</a>
+      <a class="nav-link" href="/contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero card">
+      <div class="hero-text">
+        <h2>Furniture that looks expensive (because it is)</h2>
+        <p class="muted">
+          This is a small multi-page shop built for analytics. Click around, filter items, add to cart,
+          submit forms, and scroll. Later you’ll attach your collector.
+        </p>
+
+        <div class="row wrap">
+          <a class="btn primary" href="/catalog.html">Browse the catalog</a>
+          <a class="btn" href="/product.html?sku=sofa-01">View a product</a>
+          <button class="btn ghost" id="openPromo" type="button">Open promo modal</button>
+        </div>
+
+        <p class="status" id="statusLine" role="status" aria-live="polite">Ready.</p>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-card">
+          <div class="art-title">Featured</div>
+          <div class="art-name">Cedar Lounge Sofa</div>
+          <div class="art-sub">soft linen · oak frame</div>
+          <div class="art-price">$1299</div>
+        </div>
+        <div class="art-card">
+          <div class="art-title">New</div>
+          <div class="art-name">Atlas Coffee Table</div>
+          <div class="art-sub">walnut · brass</div>
+          <div class="art-price">$399</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Quick Picks</h2>
+      <p class="muted">Add items to cart directly from the home page.</p>
+
+      <div class="grid-3" id="quickPicks" aria-label="Quick pick products">
+        <!-- populated by app.js -->
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Newsletter Signup (Form)</h2>
+      <p class="muted">
+        Works without a backend: submits via GET to this page (request appears in access logs).
+      </p>
+
+      <form class="form" id="newsletterForm" action="" method="get">
+        <label class="field">
+          <span>Email</span>
+          <input name="email" type="email" placeholder="you@example.com" required />
+        </label>
+
+        <label class="field">
+          <span>Style</span>
+          <select name="style">
+            <option value="modern">Modern</option>
+            <option value="midcentury">Mid-century</option>
+            <option value="rustic">Rustic</option>
+            <option value="minimal">Minimal</option>
+          </select>
+        </label>
+
+        <label class="check">
+          <input name="consent" type="checkbox" value="yes" />
+          <span>I agree to tasteful emails and occasional hardwood propaganda.</span>
+        </label>
+
+        <div class="row wrap">
+          <button class="btn primary" type="submit">Sign up</button>
+          <button class="btn" type="reset">Reset</button>
+        </div>
+
+        <p class="status" id="newsletterStatus" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Scroll Gallery</h2>
+      <p class="muted">Scroll inside this box to generate scroll activity later.</p>
+      <div class="scrollbox" id="scrollbox" tabindex="0" aria-label="Scrollable gallery list">
+        <ul id="scrollList"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> Juniper &amp; Ash · <a href="/contact.html">Support</a></p>
+  </footer>
+
+  <dialog class="modal" id="promoModal" aria-labelledby="promoTitle">
+    <h3 id="promoTitle">Weekend Promo</h3>
+    <p>Free shipping on orders over $500. Not real. Still clickable.</p>
+    <div class="row wrap">
+      <a class="btn primary" href="/catalog.html">Shop now</a>
+      <button class="btn" id="closePromo" type="button">Close</button>
+    </div>
+  </dialog>
+
+  <dialog class="modal" id="cartModal" aria-labelledby="cartTitle">
+    <div class="modal-head">
+      <h3 id="cartTitle">Your Cart</h3>
+      <button class="icon-btn" id="closeCart" type="button" aria-label="Close cart">✕</button>
+    </div>
+    <div id="cartBody" class="cart"></div>
+    <div class="cart-footer">
+      <div class="row space">
+        <strong>Total</strong>
+        <strong id="cartTotal">$0.00</strong>
+      </div>
+      <div class="row wrap">
+        <button class="btn" id="clearCart" type="button">Clear</button>
+        <a class="btn primary" href="/checkout.html" aria-disabled="true" onclick="return false;">Checkout (mock)</a>
+      </div>
+      <p class="muted">Checkout is intentionally disabled; this is just a test site.</p>
+    </div>
+  </dialog>
+</body>
+
+</html>

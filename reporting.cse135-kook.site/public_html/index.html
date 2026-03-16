@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CSE135 Analytics Platform</title>
+
+<style>
+
+:root{
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --line:#d1d5db;
+  --accent:#2563eb;
+  --accent-dark:#1d4ed8;
+  --shadow:0 8px 24px rgba(0,0,0,0.08);
+  --radius:14px;
+}
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:var(--bg);
+color:var(--text);
+}
+
+/* navbar */
+
+.topbar{
+background:#0f172a;
+color:white;
+padding:14px 24px;
+box-shadow:var(--shadow);
+}
+
+.topbar-inner{
+max-width:1100px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+}
+
+.brand{
+font-size:1.2rem;
+font-weight:bold;
+}
+
+.nav-links{
+display:flex;
+gap:10px;
+}
+
+.nav-links a{
+text-decoration:none;
+background:#1e293b;
+color:white;
+padding:10px 14px;
+border-radius:10px;
+}
+
+.nav-links a:hover{
+background:#334155;
+}
+
+/* layout */
+
+.page{
+max-width:1100px;
+margin:auto;
+padding:30px 20px;
+}
+
+/* hero */
+
+.hero{
+background:linear-gradient(135deg,#dbeafe,#eff6ff);
+border:1px solid #bfdbfe;
+border-radius:var(--radius);
+padding:30px;
+box-shadow:var(--shadow);
+margin-bottom:24px;
+}
+
+/* cards */
+
+.card-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+margin-top:20px;
+}
+
+.card{
+background:var(--card);
+border:1px solid var(--line);
+border-radius:var(--radius);
+padding:20px;
+box-shadow:var(--shadow);
+}
+
+.card h3{
+margin-top:0;
+}
+
+.card a{
+display:inline-block;
+margin-top:10px;
+text-decoration:none;
+background:var(--accent);
+color:white;
+padding:10px 14px;
+border-radius:10px;
+}
+
+.card a:hover{
+background:var(--accent-dark);
+}
+
+/* status panel */
+
+.status-panel{
+background:var(--card);
+border:1px solid var(--line);
+border-radius:var(--radius);
+padding:22px;
+margin-top:24px;
+box-shadow:var(--shadow);
+}
+
+.status-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:18px;
+margin-top:15px;
+}
+
+.status-item{
+background:#f8fafc;
+border:1px solid var(--line);
+border-radius:10px;
+padding:14px;
+}
+
+.status-label{
+font-size:.9rem;
+color:var(--muted);
+}
+
+.status-value{
+font-size:1.3rem;
+font-weight:bold;
+margin-top:4px;
+}
+
+.footer{
+margin-top:30px;
+text-align:center;
+color:var(--muted);
+font-size:.9rem;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+<div class="topbar-inner">
+<div class="brand">CSE135 Analytics Platform</div>
+
+<div class="nav-links">
+<a href="login.php">Login</a>
+<a href="reports.php">Dashboard</a>
+<a href="saved_reports.php">Saved Reports</a>
+</div>
+
+</div>
+</div>
+
+<div class="page">
+
+<section class="hero">
+
+<h1>CSE135 Web Analytics Reporting System</h1>
+
+<p>
+This platform collects analytics events from the collector system,
+stores them in a database, and provides dashboards and exportable reports.
+</p>
+
+<p>
+Server status:
+<strong>
+<script>
+document.write(`Live @ ${new Date()}`)
+</script>
+</strong>
+</p>
+
+</section>
+
+
+<section class="card-grid">
+
+<div class="card">
+<h3>Login</h3>
+<p>Access the analytics system using your user credentials.</p>
+<a href="login.php">Go to Login</a>
+</div>
+
+<div class="card">
+<h3>Analytics Dashboard</h3>
+<p>Interactive charts and tables showing tracked events.</p>
+<a href="reports.php">Open Dashboard</a>
+</div>
+
+<div class="card">
+<h3>Saved Reports</h3>
+<p>Previously generated analytics exports.</p>
+<a href="saved_reports.php">View Reports</a>
+</div>
+
+</section>
+
+
+<section class="status-panel">
+
+<h2>System Status</h2>
+
+<div class="status-grid">
+
+<div class="status-item">
+<div class="status-label">Collector Events</div>
+<div class="status-value" id="eventCount">Loading...</div>
+</div>
+
+<div class="status-item">
+<div class="status-label">Last Event Time</div>
+<div class="status-value" id="lastEvent">Loading...</div>
+</div>
+
+<div class="status-item">
+<div class="status-label">Database Status</div>
+<div class="status-value" id="dbStatus">Checking...</div>
+</div>
+
+</div>
+
+</section>
+
+<div class="footer">
+CSE135 Web Analytics Project — reporting.cse135-kook.site
+</div>
+
+</div>
+
+<script>
+
+async function loadStatus(){
+
+try{
+
+const res = await fetch("api/table.php")
+const data = await res.json()
+
+document.getElementById("dbStatus").textContent = "Connected"
+
+document.getElementById("eventCount").textContent = data.length
+
+if(data.length > 0){
+document.getElementById("lastEvent").textContent = data[0].received_at
+}else{
+document.getElementById("lastEvent").textContent = "No events yet"
+}
+
+}catch(e){
+
+document.getElementById("dbStatus").textContent = "Error"
+
+document.getElementById("eventCount").textContent = "—"
+document.getElementById("lastEvent").textContent = "—"
+
+}
+
+}
+
+loadStatus()
+
+</script>
+
+</body>
+</html>
